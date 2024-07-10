@@ -13,6 +13,7 @@ mongoose.connect(process.env.DATABASE_URL).then(() => {
 })
 
 const accountRouter = require('./routes/account');
+const authRouter = require("./routes/auth")
 // Routes
 app.get("/", (req, res) => {
     return res.json({
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/account", accountRouter)
+app.use("/auth", authRouter)
 
 app.listen(port, () => {
     console.log(`App is running at ${port}`)
