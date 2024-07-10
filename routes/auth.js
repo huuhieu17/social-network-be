@@ -1,6 +1,6 @@
 const express = require("express");
 const ResponseData = require("../Object/ResponseData");
-const { findByUsername, createAccount, findById } = require("../services/account");
+const { findByUsername, createAccount, findById, authenticate } = require("../services/account");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const authRouter = express();
@@ -37,8 +37,20 @@ authRouter.post("/register", async (req, res) => {
   return res.json(result);
 });
 
+/**
+ * @openapi
+ * /auth/me:
+ *  get:
+ *     tags:
+ *     - Authenticate
+ *     description: Thông tin user
+ *     responses:
+ *       200:
+ *         description: API is  running
+ */
+
 // Get user info
-authRouter.get("/me", async (req, res) => {
+authRouter.get("/me", authenticate, async (req, res) => {
   const responseData = new ResponseData();
   const { headers } = req;
   const token = headers.authorization;
